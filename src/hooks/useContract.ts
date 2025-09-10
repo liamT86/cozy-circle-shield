@@ -1,4 +1,4 @@
-import { useContract, useContractRead, useContractWrite, useAccount } from 'wagmi';
+import { useReadContract, useWriteContract, useAccount } from 'wagmi';
 import { useState } from 'react';
 
 // Contract ABI - this would be generated after compilation
@@ -69,41 +69,41 @@ const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0x742d35Cc663
 
 export const useCozyCircleContract = () => {
   const { address } = useAccount();
-  
-  const contract = useContract({
-    address: CONTRACT_ADDRESS,
-    abi: CONTRACT_ABI,
-  });
 
   return {
-    contract,
     address,
     contractAddress: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
   };
 };
 
 export const useCreateCircle = () => {
-  const { contract } = useCozyCircleContract();
+  const { contractAddress, abi } = useCozyCircleContract();
   
-  const { writeAsync: createCircle, isLoading, error } = useContractWrite({
-    address: contract?.address,
-    abi: CONTRACT_ABI,
-    functionName: 'createCircle',
-  });
+  const { writeContractAsync: createCircle, isPending: isLoading, error } = useWriteContract();
+
+  const createCircleWithArgs = async (args: [string, string, boolean]) => {
+    return createCircle({
+      address: contractAddress as `0x${string}`,
+      abi: abi,
+      functionName: 'createCircle',
+      args: args,
+    });
+  };
 
   return {
-    createCircle,
+    createCircle: createCircleWithArgs,
     isLoading,
     error,
   };
 };
 
 export const useGetCircleInfo = (circleId: number) => {
-  const { contract } = useCozyCircleContract();
+  const { contractAddress, abi } = useCozyCircleContract();
   
-  const { data, isLoading, error } = useContractRead({
-    address: contract?.address,
-    abi: CONTRACT_ABI,
+  const { data, isLoading, error } = useReadContract({
+    address: contractAddress as `0x${string}`,
+    abi: abi,
     functionName: 'getCircleInfo',
     args: [BigInt(circleId)],
   });
@@ -117,14 +117,16 @@ export const useGetCircleInfo = (circleId: number) => {
 
 export const useGetUserCircles = (userAddress?: string) => {
   const { address } = useAccount();
-  const { contract } = useCozyCircleContract();
+  const { contractAddress, abi } = useCozyCircleContract();
   
-  const { data, isLoading, error } = useContractRead({
-    address: contract?.address,
-    abi: CONTRACT_ABI,
+  const { data, isLoading, error } = useReadContract({
+    address: contractAddress as `0x${string}`,
+    abi: abi,
     functionName: 'getUserCircles',
     args: [userAddress || address],
-    enabled: !!(userAddress || address),
+    query: {
+      enabled: !!(userAddress || address),
+    },
   });
 
   return {
