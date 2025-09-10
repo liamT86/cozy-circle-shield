@@ -1,6 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "@fhevm/hardhat";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -20,9 +19,6 @@ const config: HardhatUserConfig = {
     localhost: {
       url: "http://127.0.0.1:8545",
     },
-  },
-  fhevm: {
-    network: "sepolia",
   },
 };
 
