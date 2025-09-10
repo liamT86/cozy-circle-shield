@@ -105,18 +105,23 @@ Ensure all environment variables are properly set:
    - Add them directly in Vercel dashboard: Settings → Environment Variables
    - Redeploy your project after adding variables
 
-2. **Build Failures**:
+2. **Function Runtimes must have a valid version error**:
+   - **Solution**: Remove functions configuration from vercel.json
+   - This project is a static Vite app and doesn't need serverless functions
+   - The error occurs when vercel.json includes unnecessary function configurations
+
+3. **Build Failures**:
    - Check Node.js version compatibility
    - Verify all dependencies are properly installed
    - Check for TypeScript errors
 
-3. **Environment Variables Not Working**:
+4. **Environment Variables Not Working**:
    - Ensure variables start with `VITE_` prefix
    - Redeploy after adding new environment variables
    - Check variable names for typos
    - Make sure variables are added to ALL environments (Production, Preview, Development)
 
-4. **Wallet Connection Issues**:
+5. **Wallet Connection Issues**:
    - Verify WalletConnect Project ID is correct
    - Check network configuration
    - Ensure contract addresses are valid
