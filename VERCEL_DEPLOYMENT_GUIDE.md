@@ -26,20 +26,31 @@
 
 ### Step 3: Environment Variables Configuration
 
-Add the following environment variables in Vercel dashboard:
+**IMPORTANT**: You must add environment variables in the Vercel dashboard, NOT in the vercel.json file.
 
-```
-VITE_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
-VITE_CONTRACT_ADDRESS=your_deployed_contract_address
-VITE_VERIFIER_ADDRESS=your_verifier_address
-VITE_NETWORK=sepolia
-VITE_RPC_URL=https://sepolia.gateway.tenderly.co
-```
+1. Go to your project dashboard in Vercel
+2. Click "Settings" → "Environment Variables"
+3. Add the following variables one by one:
+
+| Variable Name | Value | Environment |
+|---------------|-------|-------------|
+| `VITE_WALLETCONNECT_PROJECT_ID` | `your_walletconnect_project_id` | Production, Preview, Development |
+| `VITE_CONTRACT_ADDRESS` | `your_deployed_contract_address` | Production, Preview, Development |
+| `VITE_VERIFIER_ADDRESS` | `your_verifier_address` | Production, Preview, Development |
+| `VITE_NETWORK` | `sepolia` | Production, Preview, Development |
+| `VITE_RPC_URL` | `https://sepolia.gateway.tenderly.co` | Production, Preview, Development |
+
+**How to get WalletConnect Project ID:**
+1. Visit [cloud.walletconnect.com](https://cloud.walletconnect.com)
+2. Sign up/Login with your account
+3. Click "Create Project"
+4. Enter project name: "Cozy Circle Shield"
+5. Copy the Project ID and use it as the value for `VITE_WALLETCONNECT_PROJECT_ID`
 
 **Important Notes:**
-- Replace `your_walletconnect_project_id` with your actual WalletConnect Project ID from [cloud.walletconnect.com](https://cloud.walletconnect.com)
-- Replace `your_deployed_contract_address` with your deployed contract address
-- Replace `your_verifier_address` with your verifier address
+- Make sure to add variables to ALL environments (Production, Preview, Development)
+- Do NOT add environment variables to vercel.json file
+- After adding variables, you need to redeploy your project
 
 ### Step 4: Advanced Configuration
 
@@ -89,17 +100,23 @@ Ensure all environment variables are properly set:
 
 ### Common Issues
 
-1. **Build Failures**:
+1. **Environment Variable "VITE_WALLETCONNECT_PROJECT_ID" references Secret error**:
+   - **Solution**: Remove environment variables from vercel.json file
+   - Add them directly in Vercel dashboard: Settings → Environment Variables
+   - Redeploy your project after adding variables
+
+2. **Build Failures**:
    - Check Node.js version compatibility
    - Verify all dependencies are properly installed
    - Check for TypeScript errors
 
-2. **Environment Variables Not Working**:
+3. **Environment Variables Not Working**:
    - Ensure variables start with `VITE_` prefix
    - Redeploy after adding new environment variables
    - Check variable names for typos
+   - Make sure variables are added to ALL environments (Production, Preview, Development)
 
-3. **Wallet Connection Issues**:
+4. **Wallet Connection Issues**:
    - Verify WalletConnect Project ID is correct
    - Check network configuration
    - Ensure contract addresses are valid
